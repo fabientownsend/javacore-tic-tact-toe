@@ -1,0 +1,42 @@
+plugins {
+  id "com.github.kt3k.coveralls" version "2.6.3"
+  id "jacoco"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+
+group = "fr.townsend.tictactoe"
+version = "1.0"
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+  jcenter()
+}
+
+dependencies {
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.assertj:assertj-core:3.6.1'
+  testCompile "org.testfx:testfx-core:4.0.+"
+  testCompile "org.testfx:testfx-junit:4.0.+"
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+  }
+
+  afterEvaluate {
+    classDirectories = files(classDirectories.files.collect {
+        fileTree(dir: it,
+            exclude: ['**/Main.*'
+            ])
+        })
+  }
+}
+
+task wrapper(type: Wrapper) {
+      gradleVersion = '3.2'
+}
